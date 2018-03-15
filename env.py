@@ -20,8 +20,8 @@ sys_res_path="./resources/SysResponses.txt"
 usr_res_path="./resources/UsrResponses.txt"
 
 # 去掉单词中的特殊符号的正则表达式
-reg=r'(!|\?|\.|\"|,)+$' 
-# reg_list=["!","?","."," ",'"'] 
+reg=r'(!|\?|\.|\"|,)+$'
+# reg_list=["!","?","."," ",'"']
 env=None # 环境类
 
 # 读取文件
@@ -83,9 +83,9 @@ def get_vocabulary():
         vocabulary+=slot_words+sys_words+usr_words
         vocabulary=list(set(vocabulary))
         vocabulary.sort()
-        print "词汇列表如下，共:",len(vocabulary),"个单词"
-        print vocabulary
-        print "  "
+        print("词汇列表如下，共:",len(vocabulary),"个单词")
+        print(vocabulary)
+        print("  ")
         return vocabulary
 
 def get_words(sentence):# 根据句子获得单词列表
@@ -104,10 +104,10 @@ class Slot(object): # slot管理
             line=line.strip().split(":")
             self.slot_dic[line[0]]=line[1][1:-1].split("|")
         # print  self.slot_dic
-    
+
     def random_init_slot(self,sentence): # 随机初始化句子中的变量
         for word in get_words(sentence):
-            if self.slot_dic.has_key(word):
+            if word in self.slot_dic:
                 v=self.slot_dic[word] # 获得值
                 n=random.randint(0, len(v)-1) # 获得随机数
                 sentence=sentence.replace(word,v[n]) # 获得随机slot的值
@@ -118,7 +118,7 @@ class Slot(object): # slot管理
         flag=True # 是否全部能被slot_appeared_dic中的slot替换
         for word in get_words(sentence):
             if word.find("$") !=-1: # 是变量
-                if self.slot_appeared_dic.has_key(word):
+                if word in self.slot_appeared_dic:
                     sentence=sentence.replace(word,self.slot_appeared_dic[word]) # 发现则替换
                 else:
                     flag=False
@@ -130,8 +130,8 @@ class Slot(object): # slot管理
 class State(object): #状态维护类
     def __init__(self,vocabulary): # 更新状态
         self.vocabulary=vocabulary
-        self.init_state() 
-    
+        self.init_state()
+
     def init_state(self):
         self.state=[0]*len(self.vocabulary) # 初始化为全0
 
@@ -157,8 +157,8 @@ class Action(object): # 动作类
                 line=line.split(":")
                 self.sys_list.append(line[0]) # 放入list
                 self.sys_dic[line[0]]=line[1][1:-1]
-        print "Agent可选的action列表:"
-        print self.sys_list
+        print("Agent可选的action列表:")
+        print(self.sys_list)
         # 读取usr
         usr_list=read_file(usr_res_path)
         self.usr_dic={} # 创建sys_dic
@@ -169,11 +169,11 @@ class Action(object): # 动作类
                 key=line[0] # 获得key
                 value=line[1] # 获得value
                 self.usr_dic[key]=value.split("|")
-        
+
 
     def get_sys_action(self,key): # 获得sys action
         return self.sys_dic[key]
-    
+
     def get_usr_action(self,key): # 获得usr action
         v=self.usr_dic[key]
         if isinstance(v,list): # 有很多action可以选择
@@ -208,20 +208,20 @@ class Env(object):
         #     "text":"How can I help you?"
         # }
         # self.update_env(test)
-    
+
     def update_env(self,action_index): # 更新env状态
         # sys处理
         sys_key=self.action.sys_list[action_index] # 获得sys的key
         sys_sentence=self.action.get_sys_action(sys_key) # 获得sys的未处理句子
         self.sys_sentence=self.slot.replace_slot(sys_sentence) # 用slot填充
-        print " "
-        print "sys 选择action：",sys_key
+        print(" ")
+        print("sys 选择action：",sys_key)
         # usr处理
         if sys_key.find("ImpConfirm")!=-1 or sys_key.find("Retrieve")!=-1:
             self.user_sentence=""
         elif sys_key.find("closing")!=-1 or sys_key.find("known")!=-1:
             self.user_sentence=""
-            self.finished_one_loop=True 
+            self.finished_one_loop=True
             self.count_loop+=1 # loop+1
             if self.count_loop>self.all_loop:
                 self.finished_all_loop=True
@@ -230,19 +230,19 @@ class Env(object):
             self.user_sentence=self.slot.replace_slot(user_sentence) # 用随机slot填充
         # 打印
 
-        print "agent询问:",self.sys_sentence
+        print("agent询问:",self.sys_sentence)
         self.state.update_state(get_words(self.sys_sentence),False) # 更新agent回答到state
         if self.user_sentence: # 有回答
-            print "user回答:",self.user_sentence
+            print("user回答:",self.user_sentence)
             self.state.update_state(get_words(self.user_sentence),True) # 更新user回答到state
-        print "state更新为:",self.state.state
+        print("state更新为:",self.state.state)
         if self.user_sentence.find("Yes")!=-1 or self.user_sentence.find("I did")!=-1:
             self.reward=1
         else:
             self.reward=0
-        print "reward为:",self.reward
+        print("reward为:",self.reward)
         if self.finished_one_loop:
-            print "******************完成本轮对话*******************************************************"
+            print("******************完成本轮对话*******************************************************")
             self.finished_one_loop=False
 
 # 接收来自客户端的信息(string)
@@ -278,11 +278,4 @@ def test_disconnect():
 # 启动调用
 if __name__=="__main__":
     env=Env()
-    socketio.run(app=app,host="127.0.0.1",port="9999")
-    
-    
-
-
-
-
-
+    socketio.run(app=app,host="127.0.0.1",port=9999)

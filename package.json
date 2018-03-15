@@ -1,0 +1,26 @@
+{
+  "name": "simple-dialog-system",
+  "version": "1.0.0",
+  "description": "系统建立在深度强化学习的基础上，主要算法包括DQN等",
+  "main": "agent.js",
+  "dependencies": {
+    "convnetjs": "^0.3.0",
+    "socket.io-client": "^2.0.4",
+    "websocket": "^1.0.25",
+    "ws": "^4.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/niudongzone/simple-dialog-system.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/niudongzone/simple-dialog-system/issues"
+  },
+  "homepage": "https://github.com/niudongzone/simple-dialog-system#readme"
+}
