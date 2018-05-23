@@ -1,9 +1,10 @@
 
 //本js代表agent，其需要做的是：结合env的state与reward运用DQN生成action向量
-
-// 为避免错误，需要进入node_modules下找到deepqlearn.js中加入以下
-// var convnetjs = require(__dirname+'/convnet.js');
-// var cnnutil = require(__dirname+'/util.js');
+// 为避免错误，需要进入node_modules\convnetjs下找到deepqlearn.js中加入以下
+/*
+var convnetjs = require(__dirname+'/convnet.js');
+var cnnutil = require(__dirname+'/util.js');
+*/
 
 // 引入库文件
 var convnetjs=require("./node_modules/convnetjs/build/convnet-min");

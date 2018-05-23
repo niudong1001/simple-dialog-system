@@ -1,5 +1,4 @@
-#! /usr/bin/env python3
-# *_*coding:utf-8 *_*
+# -*- coding:utf-8 -*-
 
 # 本py代表环境，其需要做的是：
 # 1.初始化state
